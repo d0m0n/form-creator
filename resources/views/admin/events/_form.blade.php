@@ -117,7 +117,7 @@
             <label class="form-label" for="email_footer">結び文</label>
             <textarea id="email_footer" name="email_footer" class="form-input h-24" rows="2"
                 placeholder="例：ご不明な点がございましたらお気軽にお問合せください。">{{ old('email_footer', $event->email_footer ?? '') }}</textarea>
-            <p class="text-std-14 text-text-sub mt-1">メール末尾に表示されます。空白の場合「Thanks, [システム名]」が使われます。</p>
+            <p class="text-std-14 text-text-sub mt-1">メール末尾に表示されます。空白の場合「ご来場をお待ちしています。」が使われます。</p>
         </div>
     </div>
 </div>

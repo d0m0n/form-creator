@@ -40,7 +40,6 @@
 @if($entry->event->email_footer)
 {{ $entry->event->email_footer }}
 @else
-Thanks,
-{{ config('app.name') }}
+ご来場をお待ちしています。
 @endif
 </x-mail::message>
