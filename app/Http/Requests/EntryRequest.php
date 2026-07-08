@@ -19,7 +19,7 @@ class EntryRequest extends FormRequest
         return [
             'slot_id'              => ['required', 'integer', Rule::exists('slots', 'id')->where('event_id', $event->id)->where('is_active', true)],
             'rep_name'             => ['required', 'string', 'max:100'],
-            'rep_age'              => ['required', 'integer', 'min:1', 'max:99'],
+            'rep_phone'            => ['required', 'string', 'max:20', 'regex:/^[0-9\-]+$/'],
             'email'                => ['required', 'email', 'max:255'],
             'email_confirmation'   => ['required', 'same:email'],
             'members'              => ['required', 'array', 'min:1', "max:{$event->member_count}"],
@@ -34,7 +34,7 @@ class EntryRequest extends FormRequest
         return [
             'slot_id'            => '時間枠',
             'rep_name'           => '代表者氏名',
-            'rep_age'            => '代表者年齢',
+            'rep_phone'          => '電話番号',
             'email'              => 'メールアドレス',
             'email_confirmation' => 'メールアドレス（確認）',
             'members.*.name'     => 'メンバー氏名',

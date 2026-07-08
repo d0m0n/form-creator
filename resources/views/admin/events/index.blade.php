@@ -20,13 +20,16 @@
         <tbody>
         @forelse($events as $event)
             <tr class="border-b border-border">
-                <td class="py-3 pr-4 font-bold">{{ $event->title }}</td>
+                <td class="py-3 pr-4 font-bold">
+                    <a href="{{ route('entry.index', $event) }}" target="_blank" class="text-link underline">{{ $event->title }}</a>
+                </td>
                 <td class="py-3 pr-4 text-text-sub">{{ $event->start_date->format('Y/m/d') }} 〜 {{ $event->end_date->format('Y/m/d') }}</td>
                 <td class="py-3 pr-4">{{ ['draft'=>'非公開','open'=>'受付中','closed'=>'受付終了'][$event->status] }}</td>
                 <td class="py-3 pr-4">{{ $event->entries_count }}</td>
                 <td class="py-3 flex gap-3">
-                    <a href="{{ route('admin.events.show', $event) }}" class="text-link underline">詳細</a>
-                    <a href="{{ route('admin.events.edit', $event) }}" class="text-link underline">編集</a>
+                    <a href="{{ route('admin.entries.index', $event) }}" class="text-link underline">申込一覧</a>
+                    <a href="{{ route('admin.events.show', $event) }}" class="text-link underline">時間枠追加</a>
+                    <a href="{{ route('admin.events.edit', $event) }}" class="text-link underline">イベント編集</a>
                 </td>
             </tr>
         @empty

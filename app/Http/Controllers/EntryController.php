@@ -29,7 +29,7 @@ class EntryController extends Controller
         }
 
         $slots = $event->activeSlots()
-            ->withCount(['entries as confirmed_count' => fn ($q) => $q->where('status', 'confirmed')])
+            ->withCount(['members as confirmed_count' => fn ($q) => $q->where('entries.status', 'confirmed')])
             ->get();
 
         $allFull = $slots->isNotEmpty()
@@ -76,7 +76,7 @@ class EntryController extends Controller
                 'entry_no'      => $this->generateEntryNo($event),
                 'edit_token'    => Str::random(64),
                 'rep_name'      => $data['rep_name'],
-                'rep_age'       => $data['rep_age'],
+                'rep_phone'     => $data['rep_phone'],
                 'email'         => $data['email'],
                 'status'        => 'confirmed',
             ]);
@@ -121,7 +121,7 @@ class EntryController extends Controller
         $entry = Entry::where('edit_token', $token)->where('event_id', $event->id)->firstOrFail();
         abort_unless($entry->isCancellable(), 403);
         $slots = $event->activeSlots()
-            ->withCount(['entries as confirmed_count' => fn ($q) => $q->where('status', 'confirmed')])
+            ->withCount(['members as confirmed_count' => fn ($q) => $q->where('entries.status', 'confirmed')])
             ->get();
         return view('entry.edit', compact('event', 'entry', 'slots', 'token'));
     }
@@ -139,7 +139,7 @@ class EntryController extends Controller
                 abort(422, 'この時間枠は満員です。');
             }
 
-            $entry->update(['slot_id' => $slot->id, 'rep_name' => $data['rep_name'], 'rep_age' => $data['rep_age'], 'email' => $data['email']]);
+            $entry->update(['slot_id' => $slot->id, 'rep_name' => $data['rep_name'], 'rep_phone' => $data['rep_phone'], 'email' => $data['email']]);
             $entry->members()->delete();
             foreach ($data['members'] as $i => $member) {
                 $entry->members()->create(['sort_order' => $i + 1, 'name' => $member['name'], 'age' => $member['age'], 'gender' => $member['gender']]);

@@ -28,6 +28,55 @@
     @error('entry_deadline')<p class="form-error" role="alert">{{ $message }}</p>@enderror
 </div>
 <div class="form-group">
+    <label class="form-label" for="header_image">ヘッダー画像</label>
+
+    {{-- 現在の画像プレビュー（編集時） --}}
+    @if(isset($event) && $event->header_image)
+    <div class="mb-3" id="current-image-wrap">
+        <img src="{{ Storage::url($event->header_image) }}"
+             alt="現在のヘッダー画像"
+             class="rounded-md object-cover w-full"
+             style="max-height:200px; max-width:760px;">
+        <label class="flex items-center gap-2 mt-2 text-std-16 cursor-pointer">
+            <input type="checkbox" name="remove_header_image" value="1"
+                   id="remove_header_image"
+                   onchange="document.getElementById('current-image-wrap').style.opacity = this.checked ? '0.4' : '1'">
+            現在の画像を削除する
+        </label>
+    </div>
+    @endif
+
+    {{-- 新規アップロード --}}
+    <input type="file" id="header_image" name="header_image"
+           class="block w-full text-std-16 file:mr-4 file:py-2 file:px-4
+                  file:rounded-sm file:border file:border-border
+                  file:text-std-16 file:font-bold file:cursor-pointer
+                  file:bg-surface file:text-text hover:file:bg-background"
+           accept="image/jpeg,image/png,image/webp,image/gif">
+    <p class="text-std-16 text-text-sub mt-1">JPEG・PNG・WebP・GIF、最大 2 MB。推奨横幅 760 px 以上。</p>
+    @error('header_image')<p class="form-error" role="alert">{{ $message }}</p>@enderror
+
+    {{-- 選択後プレビュー --}}
+    <div id="new-image-preview" class="mt-3 hidden">
+        <p class="text-std-14 text-text-sub mb-1">アップロード後のプレビュー</p>
+        <img id="new-image-preview-img" src="" alt="" class="rounded-md object-cover w-full" style="max-height:200px; max-width:760px;">
+    </div>
+
+    <script>
+    document.getElementById('header_image')?.addEventListener('change', function () {
+        const file = this.files[0];
+        const wrap = document.getElementById('new-image-preview');
+        const img  = document.getElementById('new-image-preview-img');
+        if (file && file.type.startsWith('image/')) {
+            img.src = URL.createObjectURL(file);
+            wrap.classList.remove('hidden');
+        } else {
+            wrap.classList.add('hidden');
+        }
+    });
+    </script>
+</div>
+<div class="form-group">
     <label class="form-label" for="status">ステータス <span class="badge-required">必須</span></label>
     <select id="status" name="status" class="form-select w-48">
         @foreach(['draft'=>'非公開','open'=>'受付中','closed'=>'受付終了'] as $val => $label)

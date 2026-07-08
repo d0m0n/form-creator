@@ -11,7 +11,7 @@
         <dt class="font-bold text-text-sub">受付番号</dt><dd>{{ $entry->entry_no }}</dd>
         <dt class="font-bold text-text-sub">時間枠</dt><dd>{{ $entry->slot->game_date->format('Y/m/d') }} {{ $entry->slot->start_time }}〜{{ $entry->slot->end_time }}</dd>
         <dt class="font-bold text-text-sub">代表者氏名</dt><dd>{{ $entry->rep_name }}</dd>
-        <dt class="font-bold text-text-sub">代表者年齢</dt><dd>{{ $entry->rep_age }}歳</dd>
+        <dt class="font-bold text-text-sub">電話番号</dt><dd>{{ $entry->rep_phone }}</dd>
         <dt class="font-bold text-text-sub">メール</dt><dd>{{ $entry->email }}</dd>
         <dt class="font-bold text-text-sub">申込日時</dt><dd>{{ $entry->created_at->format('Y/m/d H:i') }}</dd>
         <dt class="font-bold text-text-sub">ステータス</dt>

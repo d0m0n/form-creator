@@ -8,7 +8,7 @@ class Event extends Model
 {
     protected $fillable = [
         'title', 'description', 'slug', 'start_date', 'end_date',
-        'entry_deadline', 'member_count', 'contact_email', 'notes', 'status', 'created_by',
+        'entry_deadline', 'header_image', 'member_count', 'contact_email', 'notes', 'status', 'created_by',
     ];
 
     protected function casts(): array
@@ -39,6 +39,11 @@ class Event extends Model
     public function entries()
     {
         return $this->hasMany(Entry::class);
+    }
+
+    public function members()
+    {
+        return $this->hasManyThrough(EntryMember::class, Entry::class);
     }
 
     public function guestOwners()

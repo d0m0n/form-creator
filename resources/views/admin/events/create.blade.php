@@ -11,7 +11,7 @@
 @endif
 
 <div class="card max-w-[760px]">
-    <form method="POST" action="{{ route('admin.events.store') }}" class="space-y-6">
+    <form method="POST" action="{{ route('admin.events.store') }}" enctype="multipart/form-data" class="space-y-6">
         @csrf
         @include('admin.events._form')
         <div class="flex gap-4">

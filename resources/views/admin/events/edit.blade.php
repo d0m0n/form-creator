@@ -11,7 +11,7 @@
 @endif
 
 <div class="card max-w-[760px]">
-    <form method="POST" action="{{ route('admin.events.update', $event) }}" class="space-y-6">
+    <form method="POST" action="{{ route('admin.events.update', $event) }}" enctype="multipart/form-data" class="space-y-6">
         @csrf @method('PATCH')
         @include('admin.events._form')
         <div class="flex gap-4">

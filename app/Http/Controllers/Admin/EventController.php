@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\EventRequest;
 use App\Models\Event;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
 {
@@ -22,7 +23,15 @@ class EventController extends Controller
 
     public function store(EventRequest $request)
     {
-        $event = Event::create([...$request->validated(), 'created_by' => Auth::guard('admin')->id()]);
+        $data = collect($request->validated())
+            ->except(['header_image', 'remove_header_image'])
+            ->toArray();
+
+        if ($request->hasFile('header_image')) {
+            $data['header_image'] = $request->file('header_image')->store('events', 'public');
+        }
+
+        $event = Event::create([...$data, 'created_by' => Auth::guard('admin')->id()]);
         return redirect()->route('admin.events.show', $event)->with('success', 'イベントを作成しました。');
     }
 
@@ -39,7 +48,19 @@ class EventController extends Controller
 
     public function update(EventRequest $request, Event $event)
     {
-        $event->update($request->validated());
+        $data = collect($request->validated())
+            ->except(['header_image', 'remove_header_image'])
+            ->toArray();
+
+        if ($request->boolean('remove_header_image')) {
+            $this->deleteHeaderImage($event);
+            $data['header_image'] = null;
+        } elseif ($request->hasFile('header_image')) {
+            $this->deleteHeaderImage($event);
+            $data['header_image'] = $request->file('header_image')->store('events', 'public');
+        }
+
+        $event->update($data);
         return redirect()->route('admin.events.show', $event)->with('success', 'イベントを更新しました。');
     }
 
@@ -48,7 +69,15 @@ class EventController extends Controller
         if ($event->entries()->where('status', 'confirmed')->exists()) {
             return back()->with('error', '申込済みの枠があるため削除できません。ステータスを「受付終了」に変更してください。');
         }
+        $this->deleteHeaderImage($event);
         $event->delete();
         return redirect()->route('admin.events.index')->with('success', 'イベントを削除しました。');
+    }
+
+    private function deleteHeaderImage(Event $event): void
+    {
+        if ($event->header_image) {
+            Storage::disk('public')->delete($event->header_image);
+        }
     }
 }

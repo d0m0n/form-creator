@@ -27,14 +27,19 @@ class Slot extends Model
         return $this->hasMany(Entry::class);
     }
 
-    public function confirmedEntriesCount(): int
+    public function members()
     {
-        return $this->entries()->where('status', 'confirmed')->count();
+        return $this->hasManyThrough(EntryMember::class, Entry::class);
+    }
+
+    public function confirmedMembersCount(): int
+    {
+        return $this->members()->where('entries.status', 'confirmed')->count();
     }
 
     public function remainingCapacity(): int
     {
-        return $this->capacity - $this->confirmedEntriesCount();
+        return $this->capacity - $this->confirmedMembersCount();
     }
 
     public function isFull(): bool

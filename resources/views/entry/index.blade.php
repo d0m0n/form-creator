@@ -73,9 +73,11 @@
             @error('rep_name')<p id="rep_name-error" class="form-error" role="alert">{{ $message }}</p>@enderror
         </div>
         <div class="form-group">
-            <label class="form-label" for="rep_age">代表者年齢 <span class="badge-required">必須</span></label>
-            <input type="number" id="rep_age" name="rep_age" class="form-input w-24" value="{{ old('rep_age') }}" min="1" max="99" required aria-required="true">
-            @error('rep_age')<p class="form-error" role="alert">{{ $message }}</p>@enderror
+            <label class="form-label" for="rep_phone">電話番号 <span class="badge-required">必須</span></label>
+            <input type="tel" id="rep_phone" name="rep_phone" class="form-input w-52"
+                   value="{{ old('rep_phone') }}" placeholder="例：090-1234-5678"
+                   autocomplete="tel" required aria-required="true">
+            @error('rep_phone')<p class="form-error" role="alert">{{ $message }}</p>@enderror
         </div>
         <div class="form-group">
             <label class="form-label" for="email">メールアドレス <span class="badge-required">必須</span></label>

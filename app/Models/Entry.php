@@ -8,7 +8,7 @@ class Entry extends Model
 {
     protected $fillable = [
         'event_id', 'slot_id', 'guest_user_id', 'entry_no', 'edit_token',
-        'rep_name', 'rep_age', 'email', 'status',
+        'rep_name', 'rep_phone', 'email', 'status',
     ];
 
     public function event()

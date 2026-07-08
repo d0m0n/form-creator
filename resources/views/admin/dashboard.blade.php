@@ -14,20 +14,41 @@
             <tr class="border-b border-border text-left text-text-sub">
                 <th class="py-3 pr-4 font-bold">イベント名</th>
                 <th class="py-3 pr-4 font-bold">ステータス</th>
+                <th class="py-3 pr-4 font-bold">申込期限</th>
+                <th class="py-3 pr-4 font-bold">受付人数</th>
                 <th class="py-3 pr-4 font-bold">申込数</th>
-                <th class="py-3 font-bold">操作</th>
+                <th class="py-3 font-bold">申込人数</th>
             </tr>
         </thead>
         <tbody>
         @forelse($events as $event)
+            @php $capacity = (int) $event->total_capacity; @endphp
             <tr class="border-b border-border">
-                <td class="py-3 pr-4">{{ $event->title }}</td>
+                <td class="py-3 pr-4 font-bold">
+                    <a href="{{ route('entry.index', $event) }}" target="_blank" class="text-link underline">{{ $event->title }}</a>
+                </td>
                 <td class="py-3 pr-4">{{ ['draft'=>'非公開','open'=>'受付中','closed'=>'受付終了'][$event->status] }}</td>
-                <td class="py-3 pr-4">{{ $event->entries_count }}</td>
-                <td class="py-3"><a href="{{ route('admin.events.show', $event) }}" class="text-link underline">詳細</a></td>
+                <td class="py-3 pr-4">
+                    @if($event->entry_deadline)
+                        {{ $event->entry_deadline->format('Y/m/d') }}
+                        @if($event->isDeadlinePassed())
+                            <span class="text-error text-std-14 font-bold ml-1">（期限切れ）</span>
+                        @endif
+                    @else
+                        <span class="text-text-sub">—</span>
+                    @endif
+                </td>
+                <td class="py-3 pr-4">{{ $capacity > 0 ? $capacity.'名' : '—' }}</td>
+                <td class="py-3 pr-4">{{ $event->entries_count }}件</td>
+                <td class="py-3">
+                    {{ $event->members_count }}名
+                    @if($capacity > 0)
+                        <span class="text-text-sub text-std-14 ml-1">/ {{ $capacity }}名</span>
+                    @endif
+                </td>
             </tr>
         @empty
-            <tr><td colspan="4" class="py-6 text-center text-text-sub">イベントがありません</td></tr>
+            <tr><td colspan="6" class="py-6 text-center text-text-sub">イベントがありません</td></tr>
         @endforelse
         </tbody>
     </table>

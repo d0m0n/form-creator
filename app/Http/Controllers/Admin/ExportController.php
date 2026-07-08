@@ -21,7 +21,7 @@ class ExportController extends Controller
             $out = fopen('php://output', 'w');
             fprintf($out, chr(0xEF) . chr(0xBB) . chr(0xBF)); // BOM
 
-            $header = ['受付番号', '開催日', '枠名', '開始', '終了', '代表者氏名', '年齢', 'メール', 'ステータス'];
+            $header = ['受付番号', '開催日', '枠名', '開始', '終了', '代表者氏名', '電話番号', 'メール', 'ステータス'];
             for ($i = 1; $i <= $event->member_count; $i++) {
                 $header[] = "メンバー{$i}氏名";
                 $header[] = "メンバー{$i}年齢";
@@ -39,7 +39,7 @@ class ExportController extends Controller
                     $entry->slot->start_time,
                     $entry->slot->end_time,
                     $entry->rep_name,
-                    $entry->rep_age,
+                    $entry->rep_phone,
                     $entry->email,
                     $entry->status === 'confirmed' ? '確認済み' : 'キャンセル',
                 ];

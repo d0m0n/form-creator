@@ -10,7 +10,7 @@
 ## 申込内容
 
 - **時間枠:** {{ $entry->slot->game_date->format('Y年m月d日') }} {{ $entry->slot->start_time }}〜{{ $entry->slot->end_time }}
-- **代表者:** {{ $entry->rep_name }}（{{ $entry->rep_age }}歳）
+- **代表者:** {{ $entry->rep_name }}（{{ $entry->rep_phone }}）
 
 ### メンバー
 @foreach($entry->members as $member)

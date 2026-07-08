@@ -10,7 +10,7 @@
         <dt class="font-bold text-text-sub">時間枠</dt>
         <dd>{{ $slot->game_date->format('Y/m/d') }} {{ $slot->start_time }}〜{{ $slot->end_time }}</dd>
         <dt class="font-bold text-text-sub">代表者氏名</dt><dd>{{ $data['rep_name'] }}</dd>
-        <dt class="font-bold text-text-sub">代表者年齢</dt><dd>{{ $data['rep_age'] }}歳</dd>
+        <dt class="font-bold text-text-sub">電話番号</dt><dd>{{ $data['rep_phone'] }}</dd>
         <dt class="font-bold text-text-sub">メール</dt><dd>{{ $data['email'] }}</dd>
     </dl>
 </div>
