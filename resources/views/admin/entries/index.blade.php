@@ -33,7 +33,7 @@
                 <td class="py-3 pr-4">{{ $entry->rep_name }}</td>
                 <td class="py-3 pr-4">{{ $entry->email }}</td>
                 <td class="py-3 pr-4">{{ $entry->status === 'confirmed' ? '確認済み' : 'キャンセル' }}</td>
-                <td class="py-3 flex gap-3 items-center">
+                <td class="py-3"><div class="flex gap-3 items-center">
                     <a href="{{ route('admin.entries.show', [$event, $entry]) }}" class="text-link underline">詳細</a>
                     @if($entry->status === 'confirmed')
                     <form method="POST" action="{{ route('admin.entries.updateStatus', [$event, $entry]) }}"
@@ -49,7 +49,7 @@
                         <button type="submit" class="text-link underline bg-transparent border-0 cursor-pointer text-std-16">確認済みに戻す</button>
                     </form>
                     @endif
-                </td>
+                </div></td>
             </tr>
         @empty
             <tr><td colspan="6" class="py-6 text-center text-text-sub">申込がありません</td></tr>

@@ -67,12 +67,14 @@
                 <td class="py-3 pr-4">{{ $slot->capacity }}名</td>
                 <td class="py-3 pr-4">{{ $slot->entries_count }}名</td>
                 <td class="py-3 pr-4">{{ $slot->is_active ? '公開' : '非公開' }}</td>
-                <td class="py-3 flex gap-3">
-                    <a href="{{ route('admin.slots.edit', [$event, $slot]) }}" class="text-link underline">編集</a>
-                    <form method="POST" action="{{ route('admin.slots.destroy', [$event, $slot]) }}" onsubmit="return confirm('削除しますか？')">
-                        @csrf @method('DELETE')
-                        <button type="submit" class="text-error underline cursor-pointer bg-transparent border-0">削除</button>
-                    </form>
+                <td class="py-3">
+                    <div class="flex gap-3">
+                        <a href="{{ route('admin.slots.edit', [$event, $slot]) }}" class="text-link underline">編集</a>
+                        <form method="POST" action="{{ route('admin.slots.destroy', [$event, $slot]) }}" onsubmit="return confirm('削除しますか？')">
+                            @csrf @method('DELETE')
+                            <button type="submit" class="text-error underline cursor-pointer bg-transparent border-0">削除</button>
+                        </form>
+                    </div>
                 </td>
             </tr>
         @empty
