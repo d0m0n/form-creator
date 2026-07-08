@@ -33,7 +33,7 @@
     {{-- 現在の画像プレビュー（編集時） --}}
     @if(isset($event) && $event->header_image)
     <div class="mb-3" id="current-image-wrap">
-        <img src="{{ Storage::url($event->header_image) }}"
+        <img src="{{ Storage::disk('public')->url($event->header_image) }}"
              alt="現在のヘッダー画像"
              class="rounded-md object-cover w-full"
              style="max-height:200px; max-width:760px;">

@@ -19,7 +19,7 @@
 @isset($event)
 @if($event->header_image)
 <div class="w-full bg-surface">
-    <img src="{{ Storage::url($event->header_image) }}"
+    <img src="{{ Storage::disk('public')->url($event->header_image) }}"
          alt="{{ $event->title }}"
          class="w-full object-cover"
          style="max-height:320px;">

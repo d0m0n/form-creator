@@ -13,16 +13,23 @@ jobs:
 
     - name: Checkout repository
       uses: actions/checkout@v4
-      
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Build assets
+      run: |
+        npm ci
+        npm run build
+
     - name: Set up SSH key
       env:
         PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
       run: |
         echo "$PRIVATE_KEY" | base64 --decode > private_key
         chmod 600 private_key
-        eval $(ssh-agent -s)
-        ssh-add private_key
-
 
     - name: Deploy to Server
       env:
@@ -30,4 +37,13 @@ jobs:
         USER: ${{ secrets.USER }}
         APP_DIR: ${{ secrets.APP_DIR }}
       run: |
-        ssh -v -o StrictHostKeyChecking=no -i private_key ${USER}@${HOST} "cd ${APP_DIR} && git pull origin main && php composer.phar install --no-dev && php artisan migrate --force"
+        ssh -o StrictHostKeyChecking=no -i private_key ${USER}@${HOST} "cd ${APP_DIR} && git pull origin main && php composer.phar install --no-dev --optimize-autoloader && php artisan migrate --force && php artisan optimize:clear && php artisan config:cache && php artisan route:cache && php artisan view:cache && mkdir -p public/storage/events"
+
+    - name: Upload built assets
+      env:
+        HOST: ${{ secrets.HOST }}
+        USER: ${{ secrets.USER }}
+        APP_DIR: ${{ secrets.APP_DIR }}
+      run: |
+        rsync -az --delete -e "ssh -o StrictHostKeyChecking=no -i private_key" \
+          public/build/ ${USER}@${HOST}:${APP_DIR}/public/build/
