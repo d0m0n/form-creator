@@ -96,3 +96,28 @@
     <label class="form-label" for="contact_email">問合せ先メール</label>
     <input type="email" id="contact_email" name="contact_email" class="form-input" value="{{ old('contact_email', $event->contact_email ?? '') }}">
 </div>
+
+<div class="mt-8 pt-6 border-t border-border">
+    <h2 class="text-std-18 font-bold mb-1">確認メール設定</h2>
+    <p class="text-std-16 text-text-sub mb-5">申込者へ送信する確認メールの文章をカスタマイズできます。空白のままにするとデフォルト文章が使われます。</p>
+    <div class="space-y-5">
+        <div class="form-group">
+            <label class="form-label" for="email_header">冒頭文</label>
+            <textarea id="email_header" name="email_header" class="form-input h-28" rows="3"
+                placeholder="例：○○大会へのお申込ありがとうございます。受付が完了しましたので内容をご確認ください。">{{ old('email_header', $event->email_header ?? '') }}</textarea>
+            <p class="text-std-14 text-text-sub mt-1">メール冒頭に表示されます。空白の場合「[イベント名] へのお申込を受け付けました。」が使われます。</p>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="email_body">追加メッセージ</label>
+            <textarea id="email_body" name="email_body" class="form-input h-28" rows="3"
+                placeholder="例：当日は開始時刻の10分前までに受付をお済ませください。">{{ old('email_body', $event->email_body ?? '') }}</textarea>
+            <p class="text-std-14 text-text-sub mt-1">申込内容の後に表示されます。注意事項・持ち物・当日案内などにご利用ください。</p>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="email_footer">結び文</label>
+            <textarea id="email_footer" name="email_footer" class="form-input h-24" rows="2"
+                placeholder="例：ご不明な点がございましたらお気軽にお問合せください。">{{ old('email_footer', $event->email_footer ?? '') }}</textarea>
+            <p class="text-std-14 text-text-sub mt-1">メール末尾に表示されます。空白の場合「Thanks, [システム名]」が使われます。</p>
+        </div>
+    </div>
+</div>

@@ -9,6 +9,7 @@ class Event extends Model
     protected $fillable = [
         'title', 'description', 'slug', 'start_date', 'end_date',
         'entry_deadline', 'header_image', 'member_count', 'contact_email', 'notes', 'status', 'created_by',
+        'email_header', 'email_body', 'email_footer',
     ];
 
     protected function casts(): array

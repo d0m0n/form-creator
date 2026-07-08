@@ -28,6 +28,9 @@ class EventRequest extends FormRequest
             'notes'         => ['nullable', 'string'],
             'contact_email' => ['nullable', 'email', 'max:255'],
             'status'        => ['required', Rule::in(['draft', 'open', 'closed'])],
+            'email_header'  => ['nullable', 'string'],
+            'email_body'    => ['nullable', 'string'],
+            'email_footer'  => ['nullable', 'string'],
         ];
     }
 }
