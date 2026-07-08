@@ -8,8 +8,8 @@
 <div class="card mb-6 space-y-3 text-std-16">
     <dl class="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-y-2 sm:gap-y-3">
         <dt class="font-bold text-text-sub">時間枠</dt>
-        <dd>{{ $slot->game_date->format('Y/m/d') }} {{ $slot->start_time }}〜{{ $slot->end_time }}</dd>
-        <dt class="font-bold text-text-sub">代表者氏名</dt><dd>{{ $data['rep_name'] }}</dd>
+        <dd>{{ $slot->game_date->format('Y/m/d') }} {{ substr($slot->start_time, 0, 5) }}〜{{ substr($slot->end_time, 0, 5) }}</dd>
+        <dt class="font-bold text-text-sub">申込者氏名</dt><dd>{{ $data['rep_name'] }}</dd>
         <dt class="font-bold text-text-sub">電話番号</dt><dd>{{ $data['rep_phone'] }}</dd>
         <dt class="font-bold text-text-sub">メール</dt><dd>{{ $data['email'] }}</dd>
     </dl>

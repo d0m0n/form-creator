@@ -40,34 +40,49 @@
     {{-- 時間枠選択 --}}
     <fieldset class="mb-8">
         <legend class="form-label mb-3">希望時間枠 <span class="badge-required">必須</span></legend>
-        @forelse($slots as $slot)
-        @php $remaining = $slot->capacity - $slot->confirmed_count; @endphp
-        <label class="radio-card mb-3 {{ $remaining <= 0 ? 'is-disabled' : '' }}">
-            <input type="radio" name="slot_id" value="{{ $slot->id }}"
-                {{ old('slot_id') == $slot->id ? 'checked' : '' }}
-                {{ $remaining <= 0 ? 'disabled' : '' }}
-                aria-label="{{ $slot->game_date->format('Y/m/d') }}{{ $slot->start_time }}〜{{ $slot->end_time }} 残り{{ $remaining }}名">
-            <span class="radio-card__label">
-                <span class="radio-card__time">{{ $slot->start_time }}〜{{ $slot->end_time }}</span>
-                <span class="radio-card__game">{{ $slot->game_date->format('m/d') }} {{ $slot->name }}</span>
-                @if($remaining <= 0)
-                    <span class="badge-full">満員</span>
-                @else
-                    <span class="badge-remain">残り{{ $remaining }}名</span>
-                @endif
-            </span>
-        </label>
+        @php
+            $jpDays = ['日','月','火','水','木','金','土'];
+            $slotsByDate = $slots->groupBy(fn($s) => $s->game_date->format('Y-m-d'));
+        @endphp
+        @forelse($slotsByDate as $date => $dateSlots)
+        @php $dateCarbon = $dateSlots->first()->game_date; @endphp
+        <details open class="group mb-3 border border-border rounded-md overflow-hidden">
+            <summary class="flex items-center justify-between px-4 py-3 cursor-pointer font-bold text-std-16 select-none hover:bg-background">
+                {{ $dateCarbon->format('m月d日') }}（{{ $jpDays[$dateCarbon->dayOfWeek] }}）
+                <span class="inline-block transition-transform duration-150 -rotate-90 group-open:rotate-0 text-text-sub">▼</span>
+            </summary>
+            <div class="px-4 pb-4 pt-2 space-y-3 border-t border-border">
+                @foreach($dateSlots as $slot)
+                @php $remaining = $slot->capacity - $slot->confirmed_count; @endphp
+                <label class="radio-card {{ $remaining <= 0 ? 'is-disabled' : '' }}">
+                    <input type="radio" name="slot_id" value="{{ $slot->id }}"
+                        {{ old('slot_id') == $slot->id ? 'checked' : '' }}
+                        {{ $remaining <= 0 ? 'disabled' : '' }}
+                        aria-label="{{ $dateCarbon->format('Y/m/d') }} {{ substr($slot->start_time, 0, 5) }}〜{{ substr($slot->end_time, 0, 5) }} 残り{{ $remaining }}名">
+                    <span class="radio-card__label">
+                        <span class="radio-card__time">{{ substr($slot->start_time, 0, 5) }}〜{{ substr($slot->end_time, 0, 5) }}</span>
+                        <span class="radio-card__game">{{ $slot->name }}</span>
+                        @if($remaining <= 0)
+                            <span class="badge-full">満員</span>
+                        @else
+                            <span class="badge-remain">残り{{ $remaining }}名</span>
+                        @endif
+                    </span>
+                </label>
+                @endforeach
+            </div>
+        </details>
         @empty
         <p class="text-text-sub">現在受付可能な時間枠がありません。</p>
         @endforelse
         @error('slot_id')<p class="form-error mt-2" role="alert">{{ $message }}</p>@enderror
     </fieldset>
 
-    {{-- 代表者情報 --}}
-    <h2 class="text-std-22 font-bold mb-4">代表者情報</h2>
+    {{-- 申込者情報 --}}
+    <h2 class="text-std-22 font-bold mb-4">申込者情報</h2>
     <div class="space-y-5 mb-8">
         <div class="form-group">
-            <label class="form-label" for="rep_name">代表者氏名 <span class="badge-required">必須</span></label>
+            <label class="form-label" for="rep_name">申込者氏名 <span class="badge-required">必須</span></label>
             <input type="text" id="rep_name" name="rep_name" class="form-input {{ $errors->has('rep_name') ? 'border-error' : '' }}"
                 value="{{ old('rep_name') }}" autocomplete="name" required aria-required="true" aria-describedby="{{ $errors->has('rep_name') ? 'rep_name-error' : '' }}">
             @error('rep_name')<p id="rep_name-error" class="form-error" role="alert">{{ $message }}</p>@enderror

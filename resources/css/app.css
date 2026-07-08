@@ -95,6 +95,13 @@
         outline-color: var(--color-focus);
     }
 
+    summary {
+        list-style: none;
+    }
+    summary::-webkit-details-marker {
+        display: none;
+    }
+
     /* スキップリンク */
     .skip-link {
         @apply absolute -top-full left-0 z-50 px-4 py-2 text-white bg-primary;
