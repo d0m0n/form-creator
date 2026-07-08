@@ -1,0 +1,276 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
+@import 'tailwindcss';
+
+@source '../../resources/views/**/*.blade.php';
+@source '../../app/Http/**/*.php';
+
+/* ============================================================
+   デザイントークン（デジタル庁デザインシステム準拠）
+   @theme で定義した変数は Tailwind ユーティリティとしても使用可能。
+   例: bg-primary / text-error / p-5 / rounded-sm
+   ============================================================ */
+@theme {
+    /* フォント */
+    --font-sans: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+
+    /* カラー（ニュートラルキーカラー） */
+    --color-primary:        #1a1a1c;
+    --color-secondary:      #595959;
+    --color-tertiary:       #d4d4d5;
+    --color-background:     #f8f8f8;
+    --color-surface:        #ffffff;
+    --color-text:           #1a1a1c;
+    --color-text-sub:       #595959;
+    --color-border:         #d4d4d5;
+
+    /* セマンティックカラー */
+    --color-error:          #c62828;
+    --color-error-bg:       #ffebee;
+    --color-success:        #2e7d32;
+    --color-success-bg:     #e8f5e9;
+    --color-warning:        #e65100;
+    --color-warning-bg:     #fff3e0;
+
+    /* リンクカラー */
+    --color-link:           #1558d6;
+    --color-link-visited:   #9c27b0;
+
+    /* フォーカスリング */
+    --color-focus:          #005fcc;
+
+    /* スペーシング（4px基準）*/
+    --spacing-1:  4px;
+    --spacing-2:  8px;
+    --spacing-3: 12px;
+    --spacing-4: 16px;
+    --spacing-5: 24px;
+    --spacing-6: 32px;
+    --spacing-7: 40px;
+    --spacing-8: 48px;
+    --spacing-9: 64px;
+
+    /* コンテンツ幅 */
+    --width-content: 760px;
+    --width-admin:  1080px;
+
+    /* 角丸 */
+    --radius-sm:  4px;
+    --radius-md:  8px;
+    --radius-lg: 12px;
+
+    /* エレベーション */
+    --shadow-sm: 0 1px  2px rgba(0,0,0,.06), 0 1px  3px rgba(0,0,0,.10);
+    --shadow-md: 0 4px  6px rgba(0,0,0,.07), 0 2px  4px rgba(0,0,0,.06);
+    --shadow-lg: 0 10px 15px rgba(0,0,0,.08), 0 4px  6px rgba(0,0,0,.05);
+
+    /* テキストサイズ（デザインシステムのスタイル名対応） */
+    --text-std-28: 28px;
+    --text-std-22: 22px;
+    --text-std-18: 18px;
+    --text-std-16: 16px;
+    --text-std-14: 14px;
+}
+
+/* ============================================================
+   ベーススタイル
+   ============================================================ */
+@layer base {
+    html {
+        @apply text-text bg-background;
+        font-size: 16px;
+    }
+
+    body {
+        @apply font-sans leading-[1.7];
+    }
+
+    a {
+        @apply text-link underline;
+    }
+    a:visited {
+        color: var(--color-link-visited);
+    }
+    a:focus-visible {
+        @apply outline-2 outline-offset-2;
+        outline-color: var(--color-focus);
+    }
+
+    /* スキップリンク */
+    .skip-link {
+        @apply absolute -top-full left-0 z-50 px-4 py-2 text-white bg-primary;
+    }
+    .skip-link:focus {
+        @apply top-0;
+    }
+}
+
+/* ============================================================
+   コンポーネント
+   ============================================================ */
+@layer components {
+
+    /* ---- ボタン ------------------------------------------ */
+    .btn {
+        @apply inline-flex items-center justify-center
+               min-w-[160px] px-6 py-3
+               text-std-16 font-bold leading-none tracking-wide
+               rounded-sm border-2 cursor-pointer
+               transition-colors duration-150;
+    }
+    .btn:focus-visible {
+        @apply outline-[3px] outline-offset-2;
+        outline-color: var(--color-focus);
+    }
+
+    .btn-primary {
+        @apply bg-primary text-white border-primary;
+    }
+    .btn-primary:hover  { background-color: #404042; border-color: #404042; }
+    .btn-primary:active { background-color: #595959; border-color: #595959; }
+
+    .btn-secondary {
+        @apply bg-surface text-primary border-primary;
+    }
+    .btn-secondary:hover  { background-color: #f0f0f0; }
+    .btn-secondary:active { background-color: #e0e0e0; }
+
+    /* ---- フォームグループ --------------------------------- */
+    .form-group {
+        @apply flex flex-col gap-2;
+    }
+
+    .form-label {
+        @apply flex items-center gap-2 text-std-16 font-bold leading-[1.6] text-text;
+    }
+
+    .badge-required {
+        @apply inline-block px-1.5 py-0.5 text-std-14 font-bold text-white bg-error rounded-sm;
+        font-size: 12px;
+    }
+
+    .form-input {
+        @apply w-full px-3 py-2.5 text-std-16 font-sans leading-[1.7]
+               text-text bg-surface border border-border rounded-sm
+               transition-[border-color,box-shadow] duration-150;
+    }
+    .form-input:focus {
+        @apply outline-none border-focus;
+        box-shadow: 0 0 0 3px rgba(0, 95, 204, .25);
+    }
+    .form-input[aria-invalid="true"] {
+        @apply border-error;
+    }
+
+    .form-select {
+        @apply w-full px-3 py-2.5 text-std-16 font-sans leading-[1.7]
+               text-text bg-surface border border-border rounded-sm
+               transition-[border-color,box-shadow] duration-150
+               appearance-none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath fill='%231a1a1c' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        padding-right: 36px;
+    }
+    .form-select:focus {
+        @apply outline-none border-focus;
+        box-shadow: 0 0 0 3px rgba(0, 95, 204, .25);
+    }
+    .form-select[aria-invalid="true"] {
+        @apply border-error;
+    }
+
+    .form-error {
+        @apply text-std-14 text-error mt-1;
+    }
+
+    /* ---- エラーサマリー ----------------------------------- */
+    .error-summary {
+        @apply p-5 mb-6 border-2 border-error bg-error-bg rounded-md;
+    }
+    .error-summary__title {
+        @apply text-std-18 font-bold text-error mb-3;
+    }
+    .error-summary__list {
+        @apply list-disc list-inside space-y-1 text-std-16 text-error;
+    }
+
+    /* ---- ステッパー -------------------------------------- */
+    .stepper {
+        @apply mb-8;
+    }
+    .stepper__list {
+        @apply flex items-center gap-0;
+    }
+    .stepper__item {
+        @apply flex items-center gap-2 text-std-16 text-secondary;
+    }
+    .stepper__item + .stepper__item::before {
+        content: '';
+        @apply block w-8 h-px bg-border mx-2;
+    }
+    .stepper__item.is-current {
+        @apply text-primary font-bold;
+    }
+    .stepper__item.is-done {
+        @apply text-secondary;
+    }
+    .stepper__num {
+        @apply flex items-center justify-center w-7 h-7 rounded-full
+               text-std-14 font-bold border-2 border-current;
+    }
+    .stepper__item.is-done .stepper__num {
+        @apply bg-secondary border-secondary text-white;
+    }
+    .stepper__item.is-current .stepper__num {
+        @apply bg-primary border-primary text-white;
+    }
+
+    /* ---- ラジオカード（試合枠選択） ----------------------- */
+    .radio-card {
+        @apply flex items-center gap-3 p-4 border border-border rounded-md
+               cursor-pointer transition-colors duration-150;
+    }
+    .radio-card:has(input:checked) {
+        @apply border-primary bg-surface;
+        box-shadow: 0 0 0 2px var(--color-primary);
+    }
+    .radio-card:has(input:focus-visible) {
+        @apply outline-[3px] outline-offset-2;
+        outline-color: var(--color-focus);
+    }
+    .radio-card.is-disabled {
+        @apply opacity-50 cursor-not-allowed bg-background;
+    }
+    .radio-card__label {
+        @apply flex items-center gap-3 text-std-16;
+    }
+    .radio-card__time {
+        @apply font-bold text-text;
+    }
+    .radio-card__game {
+        @apply text-text-sub;
+    }
+
+    /* ---- バッジ ------------------------------------------ */
+    .badge-full {
+        @apply inline-block px-2 py-0.5 text-std-14 font-bold text-white bg-error rounded-sm;
+        font-size: 12px;
+    }
+    .badge-remain {
+        @apply inline-block px-2 py-0.5 text-std-14 font-bold text-success bg-success-bg rounded-sm;
+        font-size: 12px;
+    }
+
+    /* ---- カード（管理画面テーブル等） --------------------- */
+    .card {
+        @apply bg-surface rounded-md shadow-sm p-6;
+    }
+
+    /* ---- レイアウト -------------------------------------- */
+    .layout-entry {
+        @apply max-w-[760px] mx-auto px-5 py-12;
+    }
+    .layout-admin {
+        @apply max-w-[1080px] mx-auto px-6 py-8;
+    }
+}
