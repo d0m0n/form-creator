@@ -3,7 +3,7 @@
 @section('content')
 <h1 class="text-std-28 font-bold mb-8">ダッシュボード</h1>
 
-<div class="flex justify-between items-center mb-4">
+<div class="flex flex-wrap justify-between items-center gap-4 mb-4">
     <h2 class="text-std-22 font-bold">イベント一覧</h2>
     <a href="{{ route('admin.events.create') }}" class="btn btn-primary">+ イベント作成</a>
 </div>

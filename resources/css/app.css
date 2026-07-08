@@ -242,7 +242,7 @@
         @apply opacity-50 cursor-not-allowed bg-background;
     }
     .radio-card__label {
-        @apply flex items-center gap-3 text-std-16;
+        @apply flex items-center flex-wrap gap-x-3 gap-y-1 text-std-16;
     }
     .radio-card__time {
         @apply font-bold text-text;
@@ -263,14 +263,14 @@
 
     /* ---- カード（管理画面テーブル等） --------------------- */
     .card {
-        @apply bg-surface rounded-md shadow-sm p-6;
+        @apply bg-surface rounded-md shadow-sm p-4 md:p-6;
     }
 
     /* ---- レイアウト -------------------------------------- */
     .layout-entry {
-        @apply max-w-[760px] mx-auto px-5 py-12;
+        @apply max-w-[760px] mx-auto px-4 py-8 md:px-5 md:py-12;
     }
     .layout-admin {
-        @apply max-w-[1080px] mx-auto px-6 py-8;
+        @apply max-w-[1080px] mx-auto px-4 md:px-6;
     }
 }

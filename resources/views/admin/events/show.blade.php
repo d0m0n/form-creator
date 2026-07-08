@@ -3,24 +3,26 @@
 @section('content')
 
 {{-- イベントヘッダー --}}
-<div class="flex items-start justify-between mb-6 gap-4">
-    <div>
-        <h1 class="text-std-28 font-bold">{{ $event->title }}</h1>
-        <p class="text-text-sub mt-1">
-            {{ ['draft'=>'非公開','open'=>'受付中','closed'=>'受付終了'][$event->status] }}
-            ／ {{ $event->start_date->format('Y/m/d') }} 〜 {{ $event->end_date->format('Y/m/d') }}
-            @if($event->entry_deadline)
-            ／ 申込期限：{{ $event->entry_deadline->format('Y/m/d') }}
-            @if($event->isDeadlinePassed())
-                <span class="inline-block text-std-14 font-bold text-error ml-1">（期限切れ）</span>
-            @endif
-            @endif
-        </p>
-    </div>
-    <div class="flex gap-3 flex-shrink-0">
-        <a href="{{ route('admin.events.edit', $event) }}" class="btn btn-secondary">編集</a>
-        <a href="{{ route('admin.entries.index', $event) }}" class="btn btn-secondary">申込一覧</a>
-        <a href="{{ route('admin.export.entries', $event) }}" class="btn btn-secondary">CSVダウンロード</a>
+<div class="mb-6">
+    <div class="flex flex-wrap items-start justify-between gap-4">
+        <div>
+            <h1 class="text-std-28 font-bold">{{ $event->title }}</h1>
+            <p class="text-text-sub mt-1">
+                {{ ['draft'=>'非公開','open'=>'受付中','closed'=>'受付終了'][$event->status] }}
+                ／ {{ $event->start_date->format('Y/m/d') }} 〜 {{ $event->end_date->format('Y/m/d') }}
+                @if($event->entry_deadline)
+                ／ 申込期限：{{ $event->entry_deadline->format('Y/m/d') }}
+                @if($event->isDeadlinePassed())
+                    <span class="inline-block text-std-14 font-bold text-error ml-1">（期限切れ）</span>
+                @endif
+                @endif
+            </p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+            <a href="{{ route('admin.events.edit', $event) }}" class="btn btn-secondary">編集</a>
+            <a href="{{ route('admin.entries.index', $event) }}" class="btn btn-secondary">申込一覧</a>
+            <a href="{{ route('admin.export.entries', $event) }}" class="btn btn-secondary">CSVダウンロード</a>
+        </div>
     </div>
 </div>
 
@@ -100,6 +102,9 @@
         </div>
         @endif
 
+        <div class="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
+        <div class="min-w-[580px]">
+
         {{-- カラムヘッダー（md以上で表示） --}}
         <div class="hidden md:grid gap-3 mb-2 text-std-14 font-bold text-text-sub px-1"
              style="grid-template-columns:170px 1fr 110px 110px 90px 40px;">
@@ -148,7 +153,10 @@
             </div>
         </div>
 
-        <div class="flex items-center gap-4 mt-5">
+        </div>{{-- /min-w --}}
+        </div>{{-- /overflow-x-auto --}}
+
+        <div class="flex flex-wrap items-center gap-3 mt-5">
             <button type="button" id="add-row" class="btn btn-secondary" style="min-width:auto;">
                 + 行を追加
             </button>

@@ -1,4 +1,4 @@
-<div class="grid grid-cols-2 gap-4">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <div class="form-group">
         <label class="form-label" for="game_date">開催日 <span class="badge-required">必須</span></label>
         @php
@@ -22,7 +22,7 @@
         @error('name')<p class="form-error" role="alert">{{ $message }}</p>@enderror
     </div>
 </div>
-<div class="grid grid-cols-2 gap-4">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <div class="form-group">
         <label class="form-label" for="start_time">開始時刻 <span class="badge-required">必須</span></label>
         <input type="time" id="start_time" name="start_time" class="form-input" value="{{ old('start_time', $slot->start_time ?? '') }}" required>

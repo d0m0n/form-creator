@@ -11,23 +11,50 @@
 <a href="#main" class="skip-link">本文へスキップ</a>
 
 <header class="bg-primary text-white">
-    <div class="layout-admin py-3 flex items-center justify-between">
-        <a href="{{ route('admin.dashboard') }}" class="text-std-18 font-bold text-white no-underline">管理画面</a>
-        <div class="flex items-center gap-4 text-std-16">
-            <span>{{ auth('admin')->user()->name }}</span>
+    <div class="layout-admin py-3 flex items-center justify-between gap-3">
+        <a href="{{ route('admin.dashboard') }}" class="text-std-18 font-bold text-white no-underline flex-shrink-0">管理画面</a>
+        <div class="flex items-center gap-3 text-std-16">
+            <span class="hidden sm:inline">{{ auth('admin')->user()->name }}</span>
             <form method="POST" action="{{ route('admin.logout') }}">
                 @csrf
-                <button type="submit" class="text-white underline cursor-pointer bg-transparent border-0">ログアウト</button>
+                <button type="submit" class="text-white underline cursor-pointer bg-transparent border-0 text-std-16">ログアウト</button>
             </form>
         </div>
     </div>
 </header>
 
-<div class="layout-admin mt-8 flex gap-8 items-start">
+{{-- モバイルナビ（md未満で表示） --}}
+@php $current = request()->route()->getName(); @endphp
+<nav class="md:hidden bg-surface border-b border-border overflow-x-auto" aria-label="管理メニュー">
+    <ul class="flex whitespace-nowrap px-2 text-std-16">
+        <li>
+            <a href="{{ route('admin.dashboard') }}"
+               class="inline-block px-3 py-3 no-underline border-b-2
+                      {{ str_starts_with($current, 'admin.dashboard') ? 'border-primary text-primary font-bold' : 'border-transparent text-text-sub' }}">
+                ダッシュボード
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('admin.events.index') }}"
+               class="inline-block px-3 py-3 no-underline border-b-2
+                      {{ str_starts_with($current, 'admin.events') ? 'border-primary text-primary font-bold' : 'border-transparent text-text-sub' }}">
+                イベント管理
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('admin.events.create') }}"
+               class="inline-block px-3 py-3 no-underline border-b-2
+                      {{ $current === 'admin.events.create' ? 'border-primary text-primary font-bold' : 'border-transparent text-text-sub' }}">
+                + イベント作成
+            </a>
+        </li>
+    </ul>
+</nav>
 
-    {{-- サイドナビ --}}
-    <nav class="w-48 flex-shrink-0" aria-label="管理メニュー">
-        @php $current = request()->route()->getName(); @endphp
+<div class="layout-admin py-4 md:py-8 flex gap-8 items-start">
+
+    {{-- サイドナビ（md以上で表示） --}}
+    <nav class="hidden md:block w-48 flex-shrink-0" aria-label="管理メニュー">
         <ul class="space-y-1 text-std-16">
             <li>
                 <a href="{{ route('admin.dashboard') }}"
@@ -43,7 +70,7 @@
                         <a href="{{ route('admin.events.index') }}"
                            class="flex items-center gap-2 px-3 py-2 rounded-sm no-underline
                                   {{ str_starts_with($current, 'admin.events') ? 'bg-primary text-white font-bold' : 'text-text hover:bg-tertiary' }}">
-                            イベント一覧
+                            イベント管理
                         </a>
                     </li>
                     <li>

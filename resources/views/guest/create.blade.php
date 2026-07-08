@@ -1,4 +1,4 @@
-@extends('layouts.entry')
+@extends('layouts.guest')
 @section('title', 'イベントフォームを作成')
 @section('content')
 <h1 class="text-std-28 font-bold mb-6">イベントフォームを作成する</h1>

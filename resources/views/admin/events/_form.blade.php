@@ -8,7 +8,7 @@
     <input type="text" id="slug" name="slug" class="form-input" value="{{ old('slug', $event->slug ?? '') }}" placeholder="summer-game-2025" required aria-required="true">
     @error('slug')<p class="form-error" role="alert">{{ $message }}</p>@enderror
 </div>
-<div class="grid grid-cols-2 gap-4">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <div class="form-group">
         <label class="form-label" for="start_date">開催開始日 <span class="badge-required">必須</span></label>
         <input type="date" id="start_date" name="start_date" class="form-input" value="{{ old('start_date', isset($event) ? $event->start_date->format('Y-m-d') : '') }}" required>

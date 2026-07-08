@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Admin\ExportController;
 use App\Http\Requests\Admin\EventRequest;
 use App\Models\Event;
 use App\Models\GuestUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class GuestEventController extends Controller
 {
@@ -67,7 +69,12 @@ class GuestEventController extends Controller
         $guest = $this->resolveGuestUser($request);
         abort_unless($guest && $guest->email_verified, 403);
 
-        $event = Event::create($request->validated());
+        $data = collect($request->validated())->except(['header_image', 'remove_header_image'])->toArray();
+        if ($request->hasFile('header_image')) {
+            $data['header_image'] = $request->file('header_image')->store('events', 'public');
+        }
+
+        $event = Event::create($data);
         $event->guestOwners()->attach($guest->id);
 
         return redirect()->route('guest.event.show', $event)->with('success', 'イベントを作成しました。');
@@ -89,7 +96,17 @@ class GuestEventController extends Controller
     public function update(EventRequest $request, Event $event)
     {
         $this->authorizeOwner($request, $event);
-        $event->update($request->validated());
+
+        $data = collect($request->validated())->except(['header_image', 'remove_header_image'])->toArray();
+        if ($request->boolean('remove_header_image')) {
+            if ($event->header_image) Storage::disk('public')->delete($event->header_image);
+            $data['header_image'] = null;
+        } elseif ($request->hasFile('header_image')) {
+            if ($event->header_image) Storage::disk('public')->delete($event->header_image);
+            $data['header_image'] = $request->file('header_image')->store('events', 'public');
+        }
+
+        $event->update($data);
         return redirect()->route('guest.event.show', $event)->with('success', 'イベントを更新しました。');
     }
 
@@ -103,6 +120,6 @@ class GuestEventController extends Controller
     public function export(Request $request, Event $event)
     {
         $this->authorizeOwner($request, $event);
-        return app(Admin\ExportController::class)->entries($event);
+        return app(ExportController::class)->entries($event);
     }
 }

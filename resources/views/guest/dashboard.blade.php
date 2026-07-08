@@ -1,4 +1,4 @@
-@extends('layouts.entry')
+@extends('layouts.guest')
 @section('title', $event->title . ' 管理')
 @section('content')
 <div class="flex items-start justify-between mb-6">

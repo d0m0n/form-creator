@@ -45,14 +45,27 @@ class EntryController extends Controller
         abort_if($event->isDeadlinePassed(), 422);
         $data = $request->validated();
         session(['entry_data' => $data]);
+
+        $formToken = Str::random(32);
+        session(['entry_form_token' => $formToken]);
+
         $slot = $event->slots()->findOrFail($data['slot_id']);
-        return view('entry.confirm', compact('event', 'slot', 'data'));
+        return view('entry.confirm', compact('event', 'slot', 'data', 'formToken'));
     }
 
     public function submit(Request $request, Event $event)
     {
         abort_unless($event->isOpen(), 404);
         abort_if($event->isDeadlinePassed(), 422);
+
+        // 使い捨てトークン検証（二重送信防止）
+        $submittedToken = $request->input('entry_form_token');
+        if (! $submittedToken || $submittedToken !== session('entry_form_token')) {
+            return redirect()->route('entry.index', $event)
+                ->withErrors(['slot_id' => '申込が既に送信されています。再度お申込みの場合は最初からやり直してください。']);
+        }
+        session()->forget('entry_form_token');
+
         $data = session('entry_data');
         abort_unless($data, 422);
 

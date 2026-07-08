@@ -1,4 +1,4 @@
-@extends('layouts.entry')
+@extends('layouts.guest')
 @section('title', '確認メール送信完了')
 @section('content')
 <div class="text-center py-12">

@@ -30,10 +30,12 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
     Route::delete('events/{event}/slots/{slot}',       [SlotController::class, 'destroy'])->name('slots.destroy');
 
     // 申込管理
-    Route::get(   'events/{event}/entries',            [EntryController::class, 'index'])       ->name('entries.index');
-    Route::get(   'events/{event}/entries/{entry}',    [EntryController::class, 'show'])        ->name('entries.show');
-    Route::patch( 'events/{event}/entries/{entry}',    [EntryController::class, 'updateStatus'])->name('entries.updateStatus');
+    Route::get(   'events/{event}/entries',             [EntryController::class, 'index'])          ->name('entries.index');
+    Route::get(   'events/{event}/participants',         [EntryController::class, 'participants'])   ->name('entries.participants');
+    Route::get(   'events/{event}/entries/{entry}',     [EntryController::class, 'show'])           ->name('entries.show');
+    Route::patch( 'events/{event}/entries/{entry}',     [EntryController::class, 'updateStatus'])   ->name('entries.updateStatus');
 
     // CSV出力
-    Route::get('events/{event}/export', [ExportController::class, 'entries'])->name('export.entries');
+    Route::get('events/{event}/export',              [ExportController::class, 'entries'])      ->name('export.entries');
+    Route::get('events/{event}/export/participants', [ExportController::class, 'participants']) ->name('export.participants');
 });
