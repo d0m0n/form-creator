@@ -16,7 +16,7 @@
 - **時間枠:** {{ $entry->slot->game_date->format('Y年m月d日') }} {{ substr($entry->slot->start_time, 0, 5) }}〜{{ substr($entry->slot->end_time, 0, 5) }}
 - **申込者:** {{ $entry->rep_name }}（{{ $entry->rep_phone }}）
 
-### メンバー
+### 参加者
 @foreach($entry->members as $member)
 {{ $member->sort_order }}. {{ $member->name }}（{{ $member->age }}歳・{{ $member->genderLabel() }}）
 @endforeach
