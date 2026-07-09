@@ -76,8 +76,9 @@ class EntryController extends Controller
                 ->lockForUpdate()
                 ->firstOrFail();
 
-            if ($slot->isFull()) {
-                return null;
+            $newMemberCount = count($data['members']);
+            if ($slot->remainingCapacity() < $newMemberCount) {
+                return ['remaining' => $slot->remainingCapacity()];
             }
 
             $guestUser = $request->attributes->get('guest_user');
@@ -106,8 +107,12 @@ class EntryController extends Controller
             return $entry;
         });
 
-        if (! $entry) {
-            return redirect()->route('entry.index', $event)->withErrors(['slot_id' => 'この時間枠は満員になりました。別の枠を選択してください。']);
+        if (is_array($entry)) {
+            $remaining = $entry['remaining'];
+            $message = $remaining > 0
+                ? "この時間枠の残り定員は {$remaining} 名のため、お申込み人数が超過しています。参加者数を減らすか、別の枠を選択してください。"
+                : 'この時間枠は満員になりました。別の枠を選択してください。';
+            return redirect()->route('entry.index', $event)->withErrors(['slot_id' => $message]);
         }
 
         session()->forget('entry_data');
