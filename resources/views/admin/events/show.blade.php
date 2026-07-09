@@ -20,8 +20,6 @@
         </div>
         <div class="flex flex-wrap gap-3">
             <a href="{{ route('admin.events.edit', $event) }}" class="btn btn-secondary">編集</a>
-            <a href="{{ route('admin.entries.index', $event) }}" class="btn btn-secondary">申込一覧</a>
-            <a href="{{ route('admin.export.entries', $event) }}" class="btn btn-secondary">CSVダウンロード</a>
         </div>
     </div>
 </div>
