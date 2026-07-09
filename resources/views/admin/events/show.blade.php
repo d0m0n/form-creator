@@ -19,7 +19,7 @@
             </p>
         </div>
         <div class="flex flex-wrap gap-3">
-            <a href="{{ route('admin.events.edit', $event) }}" class="btn btn-secondary">編集</a>
+            <a href="{{ route('admin.events.edit', $event) }}" class="btn btn-secondary">イベント編集</a>
         </div>
     </div>
 </div>
